@@ -1,0 +1,22 @@
+name: Update Submodule
+   
+   on:
+     workflow_dispatch:
+   
+   jobs:
+     update:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         
+         - name: Update submodule
+           run: |
+             git config user.name "GitHub Actions"
+             git config user.email "actions@github.com"
+             git submodule deinit -f libs/hbb_common
+             git rm -f libs/hbb_common
+             rm -rf .git/modules/libs/hbb_common
+             git submodule add https://github.com/jjay114755/hbb_common libs/hbb_common
+             git add .
+             git commit -m "更新到自定义 hbb_common" || true
+             git push
